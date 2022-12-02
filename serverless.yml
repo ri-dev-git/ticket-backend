@@ -1,0 +1,40 @@
+service: ticket-backend
+
+frameworkVersion: '3'
+
+package:
+  exclude:
+    - node_modules/**
+    - "!node_modules/axios/**"
+    - test/**
+    - package.json
+    - package-lock.json
+    - Dockerfile
+    - docker_update.sh
+    - gitlab_ci.yml
+    - .npmignore
+    - .gitignore
+
+provider:
+  name: aws
+  region: ap-south-1
+  runtime: nodejs12.x
+  deploymentBucket: ticket-sys
+  iam:
+    role: arn:aws:iam::589210720145:role/ROLE1
+  stage: ${opt:stage,'dev'}
+
+environment:
+ AURORA_SECRET_ARN: arn:aws:secretsmanager:ap-south-1:589210720145:secret:rishi1a-rT6xP7
+ RESOURCE_ARN: arn:aws:rds:ap-south-1:589210720145:cluster:ticket-db
+ DATABASE: ticket-sys
+
+
+functions:
+  getAirlines:
+    handler: src/handlers/airlines/listHandler.handler
+    events: 
+      - http:
+          path: /airline
+          method: ANY
+          cors: true
