@@ -4,7 +4,7 @@ jspm_packages
 
 # Serverless directories
 .serverless
-./serverless.yml
+/serverless.yml
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
